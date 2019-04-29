@@ -1,4 +1,4 @@
 node_modules
-requirements
-rubric
-test
+requirements.md
+rubric.md
+test.js
