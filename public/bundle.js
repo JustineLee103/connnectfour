@@ -88,46 +88,80 @@ class Board extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     constructor(props) {
         super(props);
         this.state = {
-            player1: 0,
-            player2: 0,
+            player1: 1,
+            player2: 2,
+            currentplayer: 1,
             board: [[null, null, null, null, null, null, null], [null, null, null, null, null, null, null], [null, null, null, null, null, null, null], [null, null, null, null, null, null, null], [null, null, null, null, null, null, null], [null, null, null, null, null, null, null], [null, null, null, null, null, null, null]]
         };
+        this.play = this.play.bind(this);
+        this.togglePlayer = this.togglePlayer.bind(this);
+    }
+
+    togglePlayer() {
+        return this.state.currentplayer === this.state.player1 ? this.state.player2 : this.state.player1;
+    }
+
+    play(column) {
+        const boardCopy = this.state.board.slice();
+        for (let i = 6; i >= 0; i--) {
+            if (!boardCopy[i][column]) {
+                boardCopy[i][column] = this.state.currentplayer;
+                this.setState({
+                    board: boardCopy,
+                    currentplayer: this.togglePlayer()
+                });
+                break;
+            }
+        }
     }
 
     render() {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-            "div",
+            'div',
             null,
             react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-                "table",
+                'table',
                 null,
-                this.state.board.map((row, index) => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Row, { key: index, row: row }))
+                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
+                    'tbody',
+                    null,
+                    this.state.board.map((row, index) => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Row, { key: index, row: row, play: this.play }))
+                )
             )
         );
     }
 }
 
-const Row = ({ row }) => {
+const Row = props => {
+    const row = props.row;
+    const play = props.play;
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-        "div",
+        'tr',
         null,
-        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-            "tr",
-            null,
-            row.map((cell, index) => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Cell, { key: index }))
-        )
+        row.map((cell, index) => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Cell, { key: index, value: cell, column: index, play: play }))
     );
 };
 
-const Cell = () => {
+const Cell = props => {
+    const value = props.value;
+    const column = props.column;
+    const play = props.play;
+    let color = 'white';
+    if (value === 1) {
+        color = 'gold';
+    } else if (value === 2) {
+        color = 'orange';
+    }
 
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-        "td",
+        'td',
         null,
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(
-            "div",
-            { className: "cell" },
-            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", { className: "white" })
+            'div',
+            { className: 'cell', onClick: () => {
+                    play(column);
+                } },
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement('div', { className: color })
         )
     );
 };

@@ -50,3 +50,18 @@ main {
   border-radius: 100px;
 }
 
+.gold {
+  height: 60px;
+  width: 60px;
+  background-color:#FFD700;
+  border-radius: 100px;
+}
+
+.orange {
+  height: 60px;
+  width: 60px;
+  background-color: #FF8C00;
+  border-radius: 100px;
+}
+
+
